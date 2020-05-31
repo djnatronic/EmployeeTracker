@@ -1,0 +1,24 @@
+{
+  "name": "employeetracker",
+  "version": "1.0.0",
+  "description": "Track Employees using SQL Database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/djnatronic/EmployeeTracker.git"
+  },
+  "author": "Nathan Bowdish",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/djnatronic/EmployeeTracker/issues"
+  },
+  "homepage": "https://github.com/djnatronic/EmployeeTracker#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^7.1.0",
+    "mysql": "^2.18.1"
+  }
+}
