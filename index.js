@@ -23,7 +23,8 @@ var connection = mysql.createConnection({
 
 numberArray = []
 teamArray = []
-var id = 100
+deptArray = []
+
 
 const setupQuestions = [
   {
@@ -31,6 +32,16 @@ const setupQuestions = [
       name: "mainMenu",
       message: "What would you like to do?",
       choices: ['Add Department', 'Add Employee Role', 'Add Employee', 'Exit'],
+  },
+
+  ]
+
+const displayData = [
+  {
+      type: "list",
+      name: "dataMenu",
+      message: "What would you like to do?",
+      choices: ['Display Departments', 'Display Empoloyee Roles', 'Display Employees','Main Menu'],
   },
 
   ]
@@ -97,11 +108,12 @@ const newDepartmentQuestion = [
 
 async function start(){
   console.log('\r\n')
+  getDepartment()
   console.log("****************************************")
   console.log("*********Team Generator*****************")
   console.log("****************************************")
   const department = await inquirer.prompt(setupQuestions).then(response => {
-  
+
   
   switch (response.mainMenu) {
     case 'Add Department':
@@ -118,7 +130,42 @@ async function start(){
 
 )}; 
 
+async function getDepartment(){
+  
+  connection.query("SELECT * FROM department", function (err, result) {
+    if (err) throw err;
+    console.log("********DEPARTMENT LIST***********")
+    for(i=0; i < result.length; i++){
+      console.log(result[i].name);
+    }
+});
 
+}
+
+async function getEmployeeRole(){
+  
+  connection.query("SELECT * FROM employee_role", function (err, result) {
+    if (err) throw err;
+    console.log("********EMPLOYEE ROLES***********")
+    for(i=0; i < result.length; i++){
+    console.log(result[i].title,result[i].salary);
+    }
+});
+
+}
+
+
+async function getEmployee(){
+  
+  connection.query("SELECT * FROM department", function (err, result) {
+    if (err) throw err;
+    console.log("********EMPLOYEE LIST***********")
+    for(i=0; i < result.length; i++){
+      console.log(result[i].firstName,result[i].lastName,result[i].role,result[i].manager);
+      }
+});
+
+}
 
 async function setDepartment(){
  const department = await inquirer.prompt(newDepartmentQuestion).then(response => {
