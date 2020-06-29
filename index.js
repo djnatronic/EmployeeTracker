@@ -31,7 +31,7 @@ const setupQuestions = [
       type: "list",
       name: "mainMenu",
       message: "What would you like to do?",
-      choices: ['Add Department', 'Add Employee Role', 'Add Employee', 'Exit'],
+      choices: ['Add Department', 'Add Employee Role', 'Add Employee', 'Display Data', 'Exit'],
   },
 
   ]
@@ -108,9 +108,8 @@ const newDepartmentQuestion = [
 
 async function start(){
   console.log('\r\n')
-  getDepartment()
   console.log("****************************************")
-  console.log("*********Team Generator*****************")
+  console.log("*********Employee Tracker***************")
   console.log("****************************************")
   const department = await inquirer.prompt(setupQuestions).then(response => {
 
@@ -125,19 +124,53 @@ async function start(){
     case 'Add Employee':
       addEmployee()
       break;
+    case 'Display Data':
+      getData()
+      break;
+    case 'Exit':
+      process.exit()
+      break;
+    }
+
+}
+
+)}; 
+
+async function getData(){
+  console.log('\r\n')
+  console.log("****************************************")
+  console.log("*********Display Data*****************")
+  console.log("****************************************")
+  const department = await inquirer.prompt(displayData).then(response => {
+
+  
+  switch (response.dataMenu) {
+    case 'Display Departments':
+      getDepartment();
+      break;
+    case 'Display Empoloyee Roles':
+      getEmployeeRole()
+      break;
+    case 'Display Employees':
+      getEmployee()
+      break;
   }
 }
 
 )}; 
 
 async function getDepartment(){
-  
   connection.query("SELECT * FROM department", function (err, result) {
     if (err) throw err;
+    console.log("")
+    console.log("")
     console.log("********DEPARTMENT LIST***********")
     for(i=0; i < result.length; i++){
       console.log(result[i].name);
     }
+    console.log("")
+    console.log("")
+    start()
 });
 
 }
@@ -145,11 +178,13 @@ async function getDepartment(){
 async function getEmployeeRole(){
   
   connection.query("SELECT * FROM employee_role", function (err, result) {
-    if (err) throw err;
+    /* if (err) throw err; */
+    console.log(result)
     console.log("********EMPLOYEE ROLES***********")
     for(i=0; i < result.length; i++){
     console.log(result[i].title,result[i].salary);
     }
+    start()
 });
 
 }
@@ -157,12 +192,17 @@ async function getEmployeeRole(){
 
 async function getEmployee(){
   
-  connection.query("SELECT * FROM department", function (err, result) {
+  connection.query("SELECT * FROM employee", function (err, result) {
     if (err) throw err;
+    console.log("")
+    console.log("")
     console.log("********EMPLOYEE LIST***********")
     for(i=0; i < result.length; i++){
-      console.log(result[i].firstName,result[i].lastName,result[i].role,result[i].manager);
-      }
+      console.log(result[i].first_name,result[i].last_name,result[i].role_id,result[i].manager_id);
+  }
+  console.log("")
+  console.log("")
+  start()
 });
 
 }
@@ -179,6 +219,8 @@ async function setDepartment(){
         console.log("1 record inserted");
     });
     });
+    connection.end();
+    start()
       
   }
 
@@ -198,7 +240,8 @@ async function setEmployeeRole(){
             if (err) throw err;
             console.log("1 record inserted");
         });
-        
+        connection.end();
+        start()
           
   }
   )}; 
@@ -218,7 +261,8 @@ async function newEmployee(){
         if (err) throw err;
         console.log("1 record inserted");
     });
-    
+    connection.end();
+    start()
       
 }
 )};  
